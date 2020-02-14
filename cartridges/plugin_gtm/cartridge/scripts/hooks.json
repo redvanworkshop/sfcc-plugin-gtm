@@ -1,0 +1,16 @@
+{
+	"hooks": [
+		{
+			"name": "app.template.htmlHead",
+			"script": "./hooks/gtm/gtmhooks.js"
+		},
+		{
+			"name": "app.template.beforeHeader",
+			"script": "./hooks/gtm/gtmhooks.js"
+		},
+		{
+			"name": "app.server.registerRoute",
+			"script": "./hooks/gtm/gtmhooks.js"
+		}
+	]
+}

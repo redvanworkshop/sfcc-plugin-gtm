@@ -1,0 +1,16 @@
+<div class="line-item-name">
+    <span>${lineItem.productName}</span>
+</div>
+<isif condition="${!lineItem.isBonusProductLineItem}"/>
+    <div class="remove-line-item">
+        <button type="button" class="remove-btn remove-product btn btn-light" data-toggle="modal"
+                data-target="#removeProductModal" data-pid="${lineItem.id}"
+                data-name="${lineItem.productName}"
+                data-action="${pdict.actionUrls.removeProductLineItemUrl}"
+                data-uuid="${lineItem.UUID}"
+                data-gtmdata="${JSON.stringify(lineItem.gtmData)}"
+                aria-label="${Resource.msgf('text.remove.line.item','cart', null, lineItem.productName)}">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</isif>
