@@ -45,7 +45,8 @@ function registerRoute(route) {
         }
 
         if (isJson) {
-            res.viewData.__gtmEvents = gtmHelpers.getDataLayer(res.viewData);
+            res.viewData.__gtmEvents = [];
+            res.viewData.__gtmEvents.push(gtmHelpers.getDataLayer(res.viewData));
         }
     });
 
