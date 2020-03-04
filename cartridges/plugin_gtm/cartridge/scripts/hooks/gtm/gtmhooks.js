@@ -1,7 +1,7 @@
 'use strict';
 
-var ISML = require('dw/template/ISML');
 var Site = require('dw/system/Site');
+var velocity = require('dw/template/Velocity');
 var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
 
 /**
@@ -11,8 +11,10 @@ var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
 function htmlHead(pdict) {
     var datalayer = gtmHelpers.getDataLayer(pdict);
 
-    return ISML.renderTemplate('gtm/gtmScript', {
-        id: gtmHelpers.gtmContainer,
+    velocity.render('$velocity.remoteInclude(\'GTM-HtmlHead\', \'action\', $action, \'datalayer\', $datalayer)',
+    {
+        velocity: velocity,
+        action: pdict.action,
         datalayer: JSON.stringify(datalayer)
     });
 }
@@ -22,9 +24,7 @@ function htmlHead(pdict) {
  * Renders GTM code.
  */
 function beforeHeader(pdict) {
-    return ISML.renderTemplate('gtm/gtmNoScript', {
-        id: gtmHelpers.gtmContainer
-    });
+    velocity.render('$velocity.remoteInclude(\'GTM-BeforeHeader\')', { velocity: velocity});
 }
 
 function registerRoute(route) {

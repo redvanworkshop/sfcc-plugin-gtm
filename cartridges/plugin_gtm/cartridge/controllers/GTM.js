@@ -24,4 +24,24 @@ server.get('ImpressionData', function (req, res, next) {
     next();
 });
 
+// render helpers for velocity template use from hooks
+server.get('HtmlHead', server.middleware.include, function (req, res, next) {
+    res.render('gtm/gtmScript', {
+        id: gtmHelpers.gtmContainer,
+        action: req.querystring.action,
+        datalayer: req.querystring.datalayer
+    });
+
+    next();
+});
+
+// render helpers for velocity template use from hooks
+server.get('BeforeHeader', server.middleware.include, function (req, res, next) {
+    res.render('gtm/gtmNoScript', {
+        id: gtmHelpers.gtmContainer
+    });
+
+    next();
+});
+
 module.exports = server.exports();
