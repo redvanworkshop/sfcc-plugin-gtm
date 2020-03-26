@@ -127,7 +127,9 @@ function gtmEventLoader() {
 		$(document).ajaxSuccess(function(event, request, settings, data) {
 			if (settings.dataTypes.indexOf('json') > -1) {
 				if (data && '__gtmEvents' in data && Array.isArray(data.__gtmEvents)) {
-					data.__gtmEvents.forEach(function gtmEvent(gtmEvent) { dataLayer.push(gtmEvent); });
+					data.__gtmEvents.forEach(function gtmEvent(gtmEvent) {
+						if (gtmEvent) { dataLayer.push(gtmEvent) }
+					});
 				}
 			}
 		});
