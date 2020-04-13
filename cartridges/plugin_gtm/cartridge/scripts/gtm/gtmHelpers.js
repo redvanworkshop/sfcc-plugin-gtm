@@ -56,8 +56,9 @@ function getHomeData() {
 function getProductObject(product) {
     var obj = {};
     obj.id = product.getID();
-    var master = product.variationModel.master;
+    var master = product;
     if (product.variant) {
+        master = product.variationModel.master;
         obj.id = master.ID;
     }
     obj.name = product.getName();
