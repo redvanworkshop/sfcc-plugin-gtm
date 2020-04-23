@@ -33,6 +33,11 @@ var events = {
 				removeFromCart(gmtData, qty);
 			});
 		});
+		
+		// update GTM data attribute 
+		$('body').on('product:updateAddToCart', function (e, response) {
+			$('button.add-to-cart, button.add-to-cart-global', response.$productContainer).attr('data-gtmdata', JSON.stringify(response.product.gtmData));
+		});
 	}
 };
 
