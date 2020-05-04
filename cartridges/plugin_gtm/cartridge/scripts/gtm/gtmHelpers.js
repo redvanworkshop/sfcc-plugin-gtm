@@ -241,7 +241,7 @@ function getConfirmationData(res, step) {
     };
 
     if ('order' in res) {
-        var order = dw.order.OrderMgr.getOrder(res.order.orderNumber);
+		var order = dw.order.OrderMgr.getOrder(res.order.orderNumber, request.httpParameterMap.token.value);
         obj.ecommerce.purchase.products = getProductArrayFromList(order.getProductLineItems().iterator(), getOrderProductObject);
         obj.ecommerce.purchase.actionField = getConfirmationActionFieldObject(order, step);
         obj.orderEmail = order.getCustomerEmail();
