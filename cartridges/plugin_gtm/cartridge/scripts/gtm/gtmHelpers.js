@@ -61,7 +61,7 @@ function getProductObject(product) {
     if (product.primaryCategory != null) {
         obj.category = product.primaryCategory.displayName;
         obj.categoryID = product.primaryCategory.ID.replace(/_/gi, '/');
-    } else if (master.primaryCategory != null) {
+    } else if (master && master.primaryCategory != null) {
         obj.category = master.primaryCategory.displayName;
         obj.categoryID = master.primaryCategory.ID.replace(/_/gi, '/');
     }
