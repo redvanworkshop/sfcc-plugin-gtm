@@ -7,6 +7,7 @@ var Site = require('dw/system/Site');
 var gtmEnabled = Site.getCurrent().getCustomPreferenceValue('GTMEnable') || false;
 var gtmContainerId = Site.getCurrent().getCustomPreferenceValue('GTMID') || '';
 
+var SITE_NAME = 'Sites-'+Site.current.ID+'-Site';
 /**
  * @param {Object} res - current route response object
  * @returns {Object} an object of containing customer data
@@ -241,12 +242,29 @@ function getConfirmationData(res, step) {
     };
 
     if ('order' in res) {
-		var order = dw.order.OrderMgr.getOrder(res.order.orderNumber, request.httpParameterMap.token.value);
+        var order = null;
+        try {
+            if ('token' in request.httpParameterMap) {
+                order = dw.order.OrderMgr.getOrder(res.order.orderNumber, request.httpParameterMap.token.value);
+            } else {
+                order = dw.order.OrderMgr.getOrder(res.order.orderNumber);
+            }
+        } catch (e) {
+            Logger.error('GTMHelpers - cannot retrieve order');
+        }
+        if (order) {
         obj.ecommerce.purchase.products = getProductArrayFromList(order.getProductLineItems().iterator(), getOrderProductObject);
         obj.ecommerce.purchase.actionField = getConfirmationActionFieldObject(order, step);
         obj.orderEmail = order.getCustomerEmail();
         obj.orderUser_id = order.getCustomerNo();
         obj.currency = order.currencyCode;
+        } else {
+            obj.ecommerce.purchase.actionField = {
+                id: res.order.orderNumber,
+                step: step,
+                affiliation: dw.system.Site.getCurrent().getID()
+            };
+        }
     }
     return obj;
 }
@@ -257,7 +275,9 @@ function getConfirmationData(res, step) {
  */
 function getDataLayer(res) {
     switch (res.action) {
+        case SITE_NAME:
         case 'Home-Show':
+        case 'Default-Start':
             return getHomeData();
         case 'Product-Show':
             return getPdpData(res);

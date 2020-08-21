@@ -1,6 +1,5 @@
 'use strict';
 
-var Site = require('dw/system/Site');
 var velocity = require('dw/template/Velocity');
 var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
 
@@ -15,7 +14,7 @@ function htmlHead(pdict) {
     {
         velocity: velocity,
         action: pdict.action,
-        datalayer: JSON.stringify(datalayer)
+        datalayer: JSON.stringify(datalayer) || ''
     });
 }
 
