@@ -58,6 +58,9 @@ function getProductObject(product) {
     var obj = {};
     obj.id = product.getID();
     var master = product.variationModel.master;
+    if (product.variant) {
+        obj.id = master.ID;
+    }
     obj.name = product.getName();
     if (product.primaryCategory != null) {
         obj.category = product.primaryCategory.displayName;
@@ -214,7 +217,7 @@ function getConfirmationActionFieldObject(order, step) {
     var obj = {
         id: order.getOrderNo(),
         step: step,
-        affiliation: dw.system.Site.getCurrent().getID(),
+        affiliation: Site.getCurrent().getID(),
         revenue: order.getAdjustedMerchandizeTotalPrice(true).getValue().toFixed(2),
         tax: order.getTotalTax().getValue().toFixed(2),
         shipping: order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
@@ -262,7 +265,7 @@ function getConfirmationData(res, step) {
             obj.ecommerce.purchase.actionField = {
                 id: res.order.orderNumber,
                 step: step,
-                affiliation: dw.system.Site.getCurrent().getID()
+                affiliation: Site.getCurrent().getID()
             };
         }
     }
