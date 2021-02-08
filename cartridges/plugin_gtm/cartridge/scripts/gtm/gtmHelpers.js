@@ -283,6 +283,7 @@ function getDataLayer(res) {
         case 'Default-Start':
             return getHomeData();
         case 'Product-Show':
+        case 'Product-ShowInCategory':
             return getPdpData(res);
         case 'Search-Show':
             return getSearchImpressionData(res);

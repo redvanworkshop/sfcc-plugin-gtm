@@ -5,8 +5,9 @@
  * events that are needed are initialized.
  */
 var events = {
-	homeshow: function() {},
+	homeshow: function () {},
 	productshow: function () {},
+    productshowincategory: function () {},
 	searchshow: function () {
 		$('body').on('click', '.product .image-container a:not(.quickview), .product .pdp-link a', function () {
 			var gtmdata = $.parseJSON($(this).closest('.product').attr('data-gtmdata'));
