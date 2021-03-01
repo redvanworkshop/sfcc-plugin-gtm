@@ -7,8 +7,12 @@ An easy to use Google Tag Manager plugin for Salesforce Commerce Cloud, specific
 
 Installation
 ---
+- Download this repo and add it to your project
+- Add sfcc-plugin-gtm cartridge to your site path in Business Manager
+- Import the metadata found in the metadata folder named `gtm_metadata.xml`
+- Enable GTM and add GTM ID in Business Manager Custom Preferences
 
-First you should download this repo, add it to your project and then add the plugin_gtm cartridge to your site path in Business Manager. Then, import the metadata found in the metadata folder under the filename gtm_metadata.xml.  Next, enable GTM and add your GTM ID in the Custom Preferences that were just imported.  Then you should start seeing the dataLayer populated with data coming from your site.  There is also file named GTM-Container.json in the metadata folder that is a starting template for your GTM container if you need one.
+Note: There is also file named GTM-Container.json in the metadata folder that is a starting template for your GTM container if you need one. 
 
 
 Troubleshooting
