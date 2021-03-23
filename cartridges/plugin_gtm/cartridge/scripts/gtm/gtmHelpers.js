@@ -22,6 +22,8 @@ function getCustomerData(res) {
     customerObject.environment = (system.getInstanceType() === system.PRODUCTION_SYSTEM ? 'production' : 'development');
     customerObject.demandwareID = customer.ID;
     customerObject.loggedInState = customer.authenticated;
+    customerObject.locale = dw.util.Locale.getLocale(res.locale.id).ID;
+    customerObject.currency = session.getCurrency().currencyCode;
     customerObject.pageLanguage = request.httpLocale;
     customerObject.registered = customer.registered;
 
@@ -94,7 +96,7 @@ function getPdpData(res) {
 
     if ('product' in res) {
         var product = ProductMgr.getProduct(res.product.id);
-        obj.ecommerce.detail.products.push(getProductObject(product));
+        obj.ecommerce.detail.products.push(module.exports.getProductObject(product));
     }
     return obj;
 }
@@ -151,7 +153,7 @@ function getSearchImpressionData(res) {
     var ecommerce = {
         'event': 'search',
         'ecommerce': {
-            'impressions': getProductArrayFromList((getSearchProducts(res)).iterator(), getProductObject)
+            'impressions': module.exports.getProductArrayFromList((module.exports.getSearchProducts(res)).iterator(), module.exports.getProductObject)
         }
     };
     return ecommerce;
@@ -162,7 +164,7 @@ function getSearchImpressionData(res) {
  * @returns {Object} an object containing order product data
  */
 function getOrderProductObject(productLineItem) {
-    var obj = getProductObject(productLineItem.getProduct());
+    var obj = module.exports.getProductObject(productLineItem.getProduct());
     obj.quantity = productLineItem.getQuantityValue();
     return obj;
 }
@@ -186,7 +188,7 @@ function getCheckoutData(step) {
 
     var currentBasket = dw.order.BasketMgr.getCurrentBasket();
     if (currentBasket != null) {
-        obj.ecommerce.checkout.products = getProductArrayFromList(currentBasket.getProductLineItems().iterator(), getOrderProductObject);
+        obj.ecommerce.checkout.products = module.exports.getProductArrayFromList(currentBasket.getProductLineItems().iterator(), module.exports.getOrderProductObject);
         obj.currency = currentBasket.currencyCode;
     }
     return obj;
@@ -194,7 +196,7 @@ function getCheckoutData(step) {
 
 /**
  * @param {CouponLineItems} coupons - a collection of all the order coupons
- * @return {Array} an array of all the coupons in the order
+ * @return {String} a comman separated string of all the coupons in the order
  */
 function getCoupons(coupons) {
     var text = new Array();
@@ -222,7 +224,7 @@ function getConfirmationActionFieldObject(order, step) {
         tax: order.getTotalTax().getValue().toFixed(2),
         shipping: order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
         discount: discount.toFixed(2),
-        coupon: getCoupons(order.getCouponLineItems().iterator())
+        coupon: module.exports.getCoupons(order.getCouponLineItems().iterator())
     };
 
     return obj;
@@ -256,8 +258,8 @@ function getConfirmationData(res, step) {
             Logger.error('GTMHelpers - cannot retrieve order');
         }
         if (order) {
-        obj.ecommerce.purchase.products = getProductArrayFromList(order.getProductLineItems().iterator(), getOrderProductObject);
-        obj.ecommerce.purchase.actionField = getConfirmationActionFieldObject(order, step);
+        obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject);
+        obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
         obj.orderEmail = order.getCustomerEmail();
         obj.orderUser_id = order.getCustomerNo();
         obj.currency = order.currencyCode;
@@ -281,26 +283,26 @@ function getDataLayer(res) {
         case SITE_NAME:
         case 'Home-Show':
         case 'Default-Start':
-            return getHomeData();
+            return module.exports.getHomeData();
         case 'Product-Show':
         case 'Product-ShowInCategory':
-            return getPdpData(res);
+            return module.exports.getPdpData(res);
         case 'Search-Show':
-            return getSearchImpressionData(res);
+            return module.exports.getSearchImpressionData(res);
         case 'Cart-Show':
-            return getCheckoutData(1);
+            return module.exports.getCheckoutData(1);
         case 'Checkout-Login':
-            return getCheckoutData(2);
+            return module.exports.getCheckoutData(2);
         case 'Checkout-Begin':
-            return getCheckoutData(3);
+            return module.exports.getCheckoutData(3);
         case 'CheckoutShippingServices-SubmitShipping':
-            return getCheckoutData(4);
+            return module.exports.getCheckoutData(4);
         case 'CheckoutServices-SubmitPayment':
-            return getCheckoutData(5);
+            return module.exports.getCheckoutData(5);
         case 'CheckoutServices-PlaceOrder':
-            return getCheckoutData(6);
+            return module.exports.getCheckoutData(6);
         case 'Order-Confirm':
-            return getConfirmationData(res, 7);
+            return module.exports.getConfirmationData(res, 7);
     };
 }
 
@@ -310,5 +312,14 @@ module.exports = {
     getDataLayer: getDataLayer,
     getProductObject: getProductObject,
     getCustomerData: getCustomerData,
-    getSearchImpressionData: getSearchImpressionData
+    getSearchImpressionData: getSearchImpressionData,
+    getHomeData: getHomeData,
+    getPdpData: getPdpData,
+    getCoupons: getCoupons,
+    getConfirmationData: getConfirmationData,
+    getConfirmationActionFieldObject: getConfirmationActionFieldObject,
+    getProductArrayFromList: getProductArrayFromList,
+    getSearchProducts: getSearchProducts,
+    getOrderProductObject: getOrderProductObject,
+    getCheckoutData: getCheckoutData
 }
