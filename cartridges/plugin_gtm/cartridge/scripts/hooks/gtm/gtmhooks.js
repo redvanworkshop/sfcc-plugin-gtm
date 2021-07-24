@@ -8,14 +8,32 @@ var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
  * Renders GTM code.
  */
 function htmlHead(pdict) {
-    var datalayer = gtmHelpers.getDataLayer(pdict);
+    if (gtmHelpers.isEnabled || gtmHelpers.isGA4Enabled) {
+        var datalayer = false;
+        var ga4datalayer = false;
+        var gtmEnabled = gtmHelpers.isEnabled;
+        var gtmGA4Enabled = gtmHelpers.isGA4Enabled;
 
-    velocity.render('$velocity.remoteInclude(\'GTM-HtmlHead\', \'action\', $action, \'datalayer\', $datalayer)',
-    {
-        velocity: velocity,
-        action: pdict.action,
-        datalayer: JSON.stringify(datalayer) || ''
-    });
+        if (gtmHelpers.isEnabled) {
+            datalayer = gtmHelpers.getDataLayer(pdict, false);
+        }
+
+        if (gtmHelpers.isGA4Enabled) {
+            ga4datalayer = gtmHelpers.getDataLayer(pdict, true);
+        }
+
+        velocity.render(
+            "$velocity.remoteInclude('GTM-HtmlHead', 'action', $action, 'datalayer', $datalayer, 'ga4datalayer', $ga4datalayer, 'gtmEnabled', $gtmEnabled, 'gtmGA4Enabled', $gtmGA4Enabled)",
+            {
+                velocity: velocity,
+                action: pdict.action,
+                datalayer: datalayer ? JSON.stringify(datalayer) : false,
+                ga4datalayer: ga4datalayer ? JSON.stringify(ga4datalayer) : false,
+                gtmEnabled: gtmEnabled,
+                gtmGA4Enabled: gtmGA4Enabled,
+            }
+        );
+    }
 }
 
 /**
@@ -23,7 +41,7 @@ function htmlHead(pdict) {
  * Renders GTM code.
  */
 function beforeHeader(pdict) {
-    velocity.render('$velocity.remoteInclude(\'GTM-BeforeHeader\')', { velocity: velocity});
+    velocity.render("$velocity.remoteInclude('GTM-BeforeHeader')", { velocity: velocity });
 }
 
 function registerRoute(route) {
@@ -45,27 +63,42 @@ function registerRoute(route) {
 
         if (isJson) {
             res.viewData.__gtmEvents = [];
-            res.viewData.__gtmEvents.push(gtmHelpers.getDataLayer(res.viewData));
+
+            if (gtmHelpers.isEnabled) {
+                var dataLayerEvent = gtmHelpers.getDataLayer(res.viewData, false);
+
+                if (dataLayerEvent) {
+                    res.viewData.__gtmEvents.push(dataLayerEvent);
+                }
+            }
+
+            if (gtmHelpers.isGA4Enabled) {
+                var dataLayerEvent = gtmHelpers.getDataLayer(res.viewData, true);
+
+                if (dataLayerEvent) {
+                    res.viewData.__gtmEvents.push(dataLayerEvent);
+                }
+            }
         }
     });
 
     // re-register Complete listeners
-    onCompleteListeners.forEach(function(listener){
+    onCompleteListeners.forEach(function (listener) {
         route.on('route:Complete', listener);
     });
 }
 
 // Ensure gtm is enabled before registering hooks
-if (gtmHelpers.isEnabled) {
+if (gtmHelpers.isEnabled || gtmHelpers.isGA4Enabled) {
     module.exports = {
         htmlHead: htmlHead,
         beforeHeader: beforeHeader,
-        registerRoute: registerRoute
-    }
+        registerRoute: registerRoute,
+    };
 } else {
     module.exports = {
-        htmlHead: function(){},
-        beforeHeader: function(){},
-        registerRoute: function(){}
-    }
+        htmlHead: function () {},
+        beforeHeader: function () {},
+        registerRoute: function () {},
+    };
 }

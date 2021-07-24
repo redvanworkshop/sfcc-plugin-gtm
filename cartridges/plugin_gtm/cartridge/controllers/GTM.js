@@ -6,9 +6,9 @@ var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
 
 server.get('CustomerData', function (req, res, next) {
     var customerData = gtmHelpers.getCustomerData(req);
-    
+
     res.render('/gtm/gtmCustomerData', {
-        customerData: JSON.stringify(customerData)
+        customerData: JSON.stringify(customerData),
     });
     next();
 });
@@ -18,8 +18,12 @@ server.get('ImpressionData', function (req, res, next) {
     var searchImpressionData = gtmHelpers.getSearchImpressionData(req);
     searchImpressionData.event = 'searchImpressions';
 
+    var ga4SearchImpressionData = gtmHelpers.getGA4SearchImpressionData(req);
+    ga4SearchImpressionData.event = 'view_item_list';
+
     res.render('/gtm/gtmImpressionData', {
-        searchImpressionData: JSON.stringify(searchImpressionData)
+        searchImpressionData: JSON.stringify(searchImpressionData),
+        ga4SearchImpressionData: JSON.stringify(ga4SearchImpressionData),
     });
     next();
 });
@@ -29,7 +33,10 @@ server.get('HtmlHead', server.middleware.include, function (req, res, next) {
     res.render('gtm/gtmScript', {
         id: gtmHelpers.gtmContainer,
         action: req.querystring.action,
-        datalayer: req.querystring.datalayer
+        datalayer: req.querystring.datalayer,
+        ga4datalayer: req.querystring.ga4datalayer,
+        gtmEnabled: req.querystring.gtmEnabled,
+        gtmGA4Enabled: req.querystring.gtmGA4Enabled,
     });
 
     next();
@@ -38,7 +45,7 @@ server.get('HtmlHead', server.middleware.include, function (req, res, next) {
 // render helpers for velocity template use from hooks
 server.get('BeforeHeader', server.middleware.include, function (req, res, next) {
     res.render('gtm/gtmNoScript', {
-        id: gtmHelpers.gtmContainer
+        id: gtmHelpers.gtmContainer,
     });
 
     next();

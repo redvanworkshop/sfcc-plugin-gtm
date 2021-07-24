@@ -9,6 +9,13 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="GTMEnableGA4">
+                <display-name xml:lang="x-default">Enable GTM GA4</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="GTMID">
                 <display-name xml:lang="x-default">GTM ID</display-name>
                 <description xml:lang="x-default">This is the ID you get from GTM</description>
@@ -22,6 +29,7 @@
             <attribute-group group-id="GTM">
                 <display-name xml:lang="x-default">GTM</display-name>
                 <attribute attribute-id="GTMEnable"/>
+                <attribute attribute-id="GTMEnableGA4"/>
                 <attribute attribute-id="GTMID"/>
             </attribute-group>
         </group-definitions>

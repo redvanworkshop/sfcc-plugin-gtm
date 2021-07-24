@@ -1,13 +1,22 @@
 <script>
     var pageAction = '${pdict.action.replace("-", "").toLowerCase()}';
     window.dataLayer = window.dataLayer || [];
+    window.gtmEnabled = <isprint value="${pdict.gtmEnabled}" encoding="off"/>;
+    window.gtmGA4Enabled = <isprint value="${pdict.gtmGA4Enabled}" encoding="off"/>;
     var orderId = -1;
+    var dataLayerEvent = <isprint value="${pdict.datalayer}" encoding="off"/>;
+    var ga4DataLayerEvent = <isprint value="${pdict.ga4datalayer}" encoding="off"/>;
 
     // In all cases except Order Confirmation, the data layer should be pushed, so default to that case
     var pushDataLayer = true;
     if (pageAction === 'orderconfirm') {
         // As of now, the correction is for order confirmation only
-        orderId = getOrderId(<isprint value="${pdict.datalayer}" encoding="off"/>);
+        if (dataLayerEvent) {
+            orderId = getOrderId(dataLayerEvent);
+        } else {
+            orderId = getGA4OrderId(ga4DataLayerEvent);
+        }
+
         var ordersPushedToGoogle = getOrdersPushedToGoogle();
         var orderHasBeenPushedToGoogle = orderHasBeenPushedToGoogle(orderId, ordersPushedToGoogle);
         if (orderHasBeenPushedToGoogle) {
@@ -17,7 +26,19 @@
     }
 
     if (pushDataLayer) {
-        dataLayer.push(<isprint value="${pdict.datalayer}" encoding="off"/>);
+        if (dataLayerEvent) {
+            dataLayer.push(dataLayerEvent);
+        }
+
+        // If both events active, clear first ecommerce object to prevent events affecting one another
+        if (dataLayerEvent && ga4DataLayerEvent) {
+            dataLayer.push({ ecommerce: null });
+        }
+
+        if (ga4DataLayerEvent) {
+            dataLayer.push(ga4DataLayerEvent);
+        }
+
         if (pageAction === 'orderconfirm') {
             // Add the orderId to the array of orders that is being stored in localStorage
             ordersPushedToGoogle.push(orderId);
@@ -32,6 +53,14 @@
                 'id' in dataLayer.ecommerce.purchase.actionField) {
                 return dataLayer.ecommerce.purchase.actionField.id;
             }
+        }
+
+        return -1;
+    }
+
+    function getGA4OrderId(dataLayer) {
+        if ('ecommerce' in dataLayer && 'transaction_id' in dataLayer.ecommerce) {
+            return dataLayer.transaction_id;
         }
 
         return -1;
@@ -59,7 +88,7 @@
     }
 </script>
 <iscomment>Remote include for customer specific data</iscomment>
-<isinclude url="${URLUtils.url('GTM-CustomerData')}"/>
+<isinclude url="${URLUtils.url('GTM-CustomerData')}" />
 
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
