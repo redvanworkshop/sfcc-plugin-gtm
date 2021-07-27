@@ -30,7 +30,7 @@ function htmlHead(pdict) {
                 datalayer: datalayer ? JSON.stringify(datalayer) : false,
                 ga4datalayer: ga4datalayer ? JSON.stringify(ga4datalayer) : false,
                 gtmEnabled: gtmEnabled,
-                gtmGA4Enabled: gtmGA4Enabled,
+                gtmGA4Enabled: gtmGA4Enabled
             }
         );
     }

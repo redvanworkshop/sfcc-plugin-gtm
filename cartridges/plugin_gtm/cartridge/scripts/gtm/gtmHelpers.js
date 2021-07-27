@@ -237,7 +237,7 @@ function getGA4SearchImpressionData(res) {
         'event': 'view_item_list',
         'ecommerce': {
             'items': module.exports.getProductArrayFromList(module.exports.getSearchProducts(res).iterator(), module.exports.getGA4ProductObject, true)
-        },
+        }
     };
 
     if ('productSearch' in res && 'category' in res.productSearch) {
@@ -483,6 +483,8 @@ function getDataLayer(res, ga4) {
         switch (res.action) {
             case 'Product-Show':
                 return getGA4PdpData(res);
+            case 'Product-ShowInCategory':
+                return getGA4PdpData(res);
             case 'Search-Show':
                 return getGA4SearchImpressionData(res);
             case 'Cart-Show':
@@ -506,6 +508,8 @@ function getDataLayer(res, ga4) {
             case 'Default-Start':
                 return getHomeData();
             case 'Product-Show':
+                return getPdpData(res);
+            case 'Product-ShowInCategory':
                 return getPdpData(res);
             case 'Search-Show':
                 return getSearchImpressionData(res);
@@ -551,5 +555,5 @@ module.exports = {
     getOrderProductObject: getOrderProductObject,
     getGA4OrderProductObject: getGA4OrderProductObject,
     getCheckoutData: getCheckoutData,
-    getGA4CheckoutData: getGA4CheckoutData,
+    getGA4CheckoutData: getGA4CheckoutData
 };

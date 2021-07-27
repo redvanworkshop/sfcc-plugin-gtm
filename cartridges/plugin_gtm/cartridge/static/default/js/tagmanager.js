@@ -63,7 +63,7 @@ var events = {
                 .attr('data-gtmdata', JSON.stringify(response.product.gtmData))
                 .attr('data-gtmga4data', JSON.stringify(response.product.gtmGA4Data));
         });
-    },
+    }
 };
 
 /**
