@@ -60,7 +60,7 @@
 
     function getGA4OrderId(dataLayer) {
         if ('ecommerce' in dataLayer && 'transaction_id' in dataLayer.ecommerce) {
-            return dataLayer.transaction_id;
+            return dataLayer.ecommerce.transaction_id;
         }
 
         return -1;
@@ -88,7 +88,7 @@
     }
 </script>
 <iscomment>Remote include for customer specific data</iscomment>
-<isinclude url="${URLUtils.url('GTM-CustomerData')}" />
+<isinclude url="${URLUtils.url('GTM-CustomerData')}"/>
 
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

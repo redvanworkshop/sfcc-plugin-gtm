@@ -41,7 +41,7 @@ function htmlHead(pdict) {
  * Renders GTM code.
  */
 function beforeHeader(pdict) {
-    velocity.render("$velocity.remoteInclude('GTM-BeforeHeader')", { velocity: velocity });
+    velocity.render('$velocity.remoteInclude(\'GTM-BeforeHeader\')', { velocity: velocity});
 }
 
 function registerRoute(route) {
@@ -83,7 +83,7 @@ function registerRoute(route) {
     });
 
     // re-register Complete listeners
-    onCompleteListeners.forEach(function (listener) {
+    onCompleteListeners.forEach(function(listener){
         route.on('route:Complete', listener);
     });
 }
@@ -93,12 +93,12 @@ if (gtmHelpers.isEnabled || gtmHelpers.isGA4Enabled) {
     module.exports = {
         htmlHead: htmlHead,
         beforeHeader: beforeHeader,
-        registerRoute: registerRoute,
-    };
+        registerRoute: registerRoute
+    }
 } else {
     module.exports = {
-        htmlHead: function () {},
-        beforeHeader: function () {},
-        registerRoute: function () {},
-    };
+        htmlHead: function(){},
+        beforeHeader: function(){},
+        registerRoute: function(){}
+    }
 }

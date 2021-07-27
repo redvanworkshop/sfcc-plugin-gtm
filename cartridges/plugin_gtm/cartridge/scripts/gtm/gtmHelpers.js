@@ -7,8 +7,8 @@ var Site = require('dw/system/Site');
 var gtmEnabled = Site.getCurrent().getCustomPreferenceValue('GTMEnable') || false;
 var gtmGA4Enabled = Site.getCurrent().getCustomPreferenceValue('GTMEnableGA4') || false;
 var gtmContainerId = Site.getCurrent().getCustomPreferenceValue('GTMID') || '';
-var SITE_NAME = 'Sites-' + Site.current.ID + '-Site';
 
+var SITE_NAME = 'Sites-'+Site.current.ID+'-Site';
 /**
  * @param {Object} res - current route response object
  * @returns {Object} an object of containing customer data
@@ -20,7 +20,7 @@ function getCustomerData(res) {
         session = request.session,
         customerObject = {};
 
-    customerObject.environment = system.getInstanceType() === system.PRODUCTION_SYSTEM ? 'production' : 'development';
+    customerObject.environment = (system.getInstanceType() === system.PRODUCTION_SYSTEM ? 'production' : 'development');
     customerObject.demandwareID = customer.ID;
     customerObject.loggedInState = customer.authenticated;
     customerObject.locale = dw.util.Locale.getLocale(res.locale.id).ID;
@@ -33,8 +33,8 @@ function getCustomerData(res) {
         customerObject.emailHash = dw.crypto.Encoding.toHex(new dw.crypto.MessageDigest('SHA-256').digestBytes(new dw.util.Bytes(profile.email.toLowerCase())));
         customerObject.user_id = profile.getCustomerNo();
     } else {
-        var email = session.custom.email == null ? '' : session.custom.email;
-        var emailHash = session.custom.emailHash == null ? '' : session.custom.emailHash;
+        var email = (session.custom.email == null) ? '' : session.custom.email;
+        var emailHash = (session.custom.emailHash == null) ? '' : session.custom.emailHash;
         customerObject.email = email;
         customerObject.emailHash = emailHash;
         customerObject.user_id = '';
@@ -48,7 +48,7 @@ function getCustomerData(res) {
  */
 function getHomeData() {
     var obj = {
-        event: 'home',
+        'event': 'home'
     };
     return obj;
 }
@@ -76,7 +76,7 @@ function getProductObject(product) {
         obj.price = product.priceModel.maxPrice.value.toFixed(2);
     }
     return obj;
-}
+};
 
 /**
  * @param {Product} product - An instance of a product
@@ -118,15 +118,15 @@ function getGA4ProductObject(product) {
  */
 function getPdpData(res) {
     var obj = {
-        event: 'pdp',
-        ecommerce: {
-            detail: {
-                actionField: {
-                    list: Resource.msg('ecommerce.list.pdp', 'googletagmanager', null),
+        'event': 'pdp',
+        'ecommerce': {
+            'detail': {
+                'actionField': {
+                    'list': Resource.msg('ecommerce.list.pdp', 'googletagmanager', null)
                 },
-                products: [],
-            },
-        },
+                'products': []
+            }
+        }
     };
 
     if ('product' in res) {
@@ -155,12 +155,12 @@ function getGA4PdpData(res) {
         }
 
         return {
-            event: 'view_item',
-            ecommerce: {
-                currency: currency,
-                value: price,
-                items: [module.exports.getGA4ProductObject(product)],
-            },
+            'event': 'view_item',
+            'ecommerce': {
+                'currency': currency,
+                'value': price,
+                'items': [module.exports.getGA4ProductObject(product)]
+            }
         };
     }
 
@@ -203,6 +203,7 @@ function getProductArrayFromList(productList, callback, ga4) {
  * @returns {Object} an object containing a product list
  */
 function getSearchProducts(res) {
+
     var products = new dw.util.ArrayList();
     if ('productSearch' in res) {
         for (var i = 0; i < res.productSearch.productIds.length; i++) {
@@ -219,10 +220,10 @@ function getSearchProducts(res) {
  */
 function getSearchImpressionData(res) {
     var ecommerce = {
-        event: 'search',
-        ecommerce: {
-            impressions: module.exports.getProductArrayFromList(module.exports.getSearchProducts(res).iterator(), module.exports.getProductObject, false),
-        },
+        'event': 'search',
+        'ecommerce': {
+            'impressions': module.exports.getProductArrayFromList((module.exports.getSearchProducts(res)).iterator(), module.exports.getProductObject, false)
+        }
     };
     return ecommerce;
 }
@@ -233,9 +234,9 @@ function getSearchImpressionData(res) {
  */
 function getGA4SearchImpressionData(res) {
     var obj = {
-        event: 'view_item_list',
-        ecommerce: {
-            items: module.exports.getProductArrayFromList(module.exports.getSearchProducts(res).iterator(), module.exports.getGA4ProductObject, true),
+        'event': 'view_item_list',
+        'ecommerce': {
+            'items': module.exports.getProductArrayFromList(module.exports.getSearchProducts(res).iterator(), module.exports.getGA4ProductObject, true)
         },
     };
 
@@ -277,15 +278,15 @@ function getGA4OrderProductObject(productLineItem) {
  */
 function getCheckoutData(step) {
     var obj = {
-        event: 'checkout',
-        ecommerce: {
-            checkout: {
-                actionField: {
-                    step: step,
+        'event': 'checkout',
+        'ecommerce': {
+            'checkout': {
+                'actionField': {
+                    'step': step
                 },
-                products: [],
-            },
-        },
+                'products': []
+            }
+        }
     };
 
     var currentBasket = dw.order.BasketMgr.getCurrentBasket();
@@ -305,12 +306,12 @@ function getGA4CheckoutData(step) {
 
     if (currentBasket != null) {
         var obj = {
-            event: step,
-            ecommerce: {
-                currency: currentBasket.currencyCode,
-                value: currentBasket.getAdjustedMerchandizeTotalNetPrice().value.toFixed(2),
-                items: module.exports.getProductArrayFromList(currentBasket.getProductLineItems().iterator(), module.exports.getGA4OrderProductObject, true),
-            },
+            'event': step,
+            'ecommerce': {
+                'currency': currentBasket.currencyCode,
+                'value': currentBasket.getAdjustedMerchandizeTotalNetPrice().value.toFixed(2),
+                'items': module.exports.getProductArrayFromList(currentBasket.getProductLineItems().iterator(), module.exports.getGA4OrderProductObject, true)
+            }
         };
 
         if (step == 'begin_checkout' || step == 'add_shipping_info' || step == 'add_payment_info') {
@@ -379,7 +380,7 @@ function getConfirmationActionFieldObject(order, step) {
         tax: order.getTotalTax().getValue().toFixed(2),
         shipping: order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
         discount: discount.toFixed(2),
-        coupon: module.exports.getCoupons(order.getCouponLineItems().iterator()),
+        coupon: module.exports.getCoupons(order.getCouponLineItems().iterator())
     };
 
     return obj;
@@ -392,13 +393,13 @@ function getConfirmationActionFieldObject(order, step) {
  */
 function getConfirmationData(res, step) {
     var obj = {
-        event: 'order-confirmation',
-        ecommerce: {
-            purchase: {
-                actionField: {},
-                products: [],
-            },
-        },
+        'event': 'order-confirmation',
+        'ecommerce': {
+            'purchase': {
+                'actionField': {},
+                'products': []
+            }
+        }
     };
 
     if ('order' in res) {
@@ -413,16 +414,16 @@ function getConfirmationData(res, step) {
             Logger.error('GTMHelpers - cannot retrieve order');
         }
         if (order) {
-            obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject, false);
-            obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
-            obj.orderEmail = order.getCustomerEmail();
-            obj.orderUser_id = order.getCustomerNo();
-            obj.currency = order.currencyCode;
+        obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject, false);
+        obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
+        obj.orderEmail = order.getCustomerEmail();
+        obj.orderUser_id = order.getCustomerNo();
+        obj.currency = order.currencyCode;
         } else {
             obj.ecommerce.purchase.actionField = {
                 id: res.order.orderNumber,
                 step: step,
-                affiliation: Site.getCurrent().getID(),
+                affiliation: Site.getCurrent().getID()
             };
         }
     }
@@ -448,16 +449,16 @@ function getGA4ConfirmationData(res) {
 
     if (order) {
         var obj = {
-            event: 'purchase',
-            ecommerce: {
-                currency: order.currencyCode,
-                transaction_id: order.orderNo,
-                value: order.getAdjustedMerchandizeTotalPrice(true).getValue().toFixed(2),
-                shipping: order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
-                tax: order.getTotalTax().getValue().toFixed(2),
-                items: module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getGA4OrderProductObject, true),
-                affiliation: Site.getCurrent().getID(),
-            },
+            'event': 'purchase',
+            'ecommerce': {
+                'currency': order.currencyCode,
+                'transaction_id': order.orderNo,
+                'value': order.getAdjustedMerchandizeTotalPrice(true).getValue().toFixed(2),
+                'shipping': order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
+                'tax': order.getTotalTax().getValue().toFixed(2),
+                'items': module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getGA4OrderProductObject, true),
+                'affiliation': Site.getCurrent().getID()
+            }
         };
 
         var coupons = getCoupons(order.getCouponLineItems().iterator());

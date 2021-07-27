@@ -6,9 +6,9 @@ var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
 
 server.get('CustomerData', function (req, res, next) {
     var customerData = gtmHelpers.getCustomerData(req);
-
+    
     res.render('/gtm/gtmCustomerData', {
-        customerData: JSON.stringify(customerData),
+        customerData: JSON.stringify(customerData)
     });
     next();
 });
@@ -23,7 +23,7 @@ server.get('ImpressionData', function (req, res, next) {
 
     res.render('/gtm/gtmImpressionData', {
         searchImpressionData: JSON.stringify(searchImpressionData),
-        ga4SearchImpressionData: JSON.stringify(ga4SearchImpressionData),
+        ga4SearchImpressionData: JSON.stringify(ga4SearchImpressionData)
     });
     next();
 });
@@ -36,7 +36,7 @@ server.get('HtmlHead', server.middleware.include, function (req, res, next) {
         datalayer: req.querystring.datalayer,
         ga4datalayer: req.querystring.ga4datalayer,
         gtmEnabled: req.querystring.gtmEnabled,
-        gtmGA4Enabled: req.querystring.gtmGA4Enabled,
+        gtmGA4Enabled: req.querystring.gtmGA4Enabled
     });
 
     next();
@@ -45,7 +45,7 @@ server.get('HtmlHead', server.middleware.include, function (req, res, next) {
 // render helpers for velocity template use from hooks
 server.get('BeforeHeader', server.middleware.include, function (req, res, next) {
     res.render('gtm/gtmNoScript', {
-        id: gtmHelpers.gtmContainer,
+        id: gtmHelpers.gtmContainer
     });
 
     next();
