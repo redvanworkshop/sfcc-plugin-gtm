@@ -255,7 +255,7 @@ function getConfirmationData(res, step) {
                 order = dw.order.OrderMgr.getOrder(res.order.orderNumber);
             }
         } catch (e) {
-            Logger.error('GTMHelpers - cannot retrieve order');
+            dw.system.Logger.error('GTMHelpers - cannot retrieve order');
         }
         if (order) {
         obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject);
