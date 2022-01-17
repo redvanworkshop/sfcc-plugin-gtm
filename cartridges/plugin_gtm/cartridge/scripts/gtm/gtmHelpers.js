@@ -22,8 +22,12 @@ function getCustomerData(res) {
     customerObject.environment = (system.getInstanceType() === system.PRODUCTION_SYSTEM ? 'production' : 'development');
     customerObject.demandwareID = customer.ID;
     customerObject.loggedInState = customer.authenticated;
-    customerObject.locale = dw.util.Locale.getLocale(res.locale.id).ID;
-    customerObject.currency = session.getCurrency().currencyCode;
+    if (res.locale && res.locale.id) {
+        customerObject.locale = res.locale.id;
+    } else {
+        customerObject.locale = Site.current.defaultLocale;
+    }
+    customerObject.currencyCode = session.getCurrency().currencyCode;
     customerObject.pageLanguage = request.httpLocale;
     customerObject.registered = customer.registered;
 
@@ -189,7 +193,7 @@ function getCheckoutData(step) {
     var currentBasket = dw.order.BasketMgr.getCurrentBasket();
     if (currentBasket != null) {
         obj.ecommerce.checkout.products = module.exports.getProductArrayFromList(currentBasket.getProductLineItems().iterator(), module.exports.getOrderProductObject);
-        obj.currency = currentBasket.currencyCode;
+        obj.currencyCode = currentBasket.currencyCode;
     }
     return obj;
 }
@@ -249,20 +253,21 @@ function getConfirmationData(res, step) {
     if ('order' in res) {
         var order = null;
         try {
-            if ('token' in request.httpParameterMap) {
-                order = dw.order.OrderMgr.getOrder(res.order.orderNumber, request.httpParameterMap.token.value);
+            if ('orderToken' in request.httpParameterMap) {
+                order = dw.order.OrderMgr.getOrder(res.order.orderNumber, request.httpParameterMap.orderToken.value);
             } else {
                 order = dw.order.OrderMgr.getOrder(res.order.orderNumber);
             }
         } catch (e) {
-            dw.system.Logger.error('GTMHelpers - cannot retrieve order');
+            var Logger = require('dw/system/Logger');
+            Logger.error('GTMHelpers - cannot retrieve order');
         }
         if (order) {
-        obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject);
-        obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
-        obj.orderEmail = order.getCustomerEmail();
-        obj.orderUser_id = order.getCustomerNo();
-        obj.currency = order.currencyCode;
+            obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject);
+            obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
+            obj.orderEmail = order.getCustomerEmail();
+            obj.orderUser_id = order.getCustomerNo();
+            obj.currencyCode = order.currencyCode;
         } else {
             obj.ecommerce.purchase.actionField = {
                 id: res.order.orderNumber,
