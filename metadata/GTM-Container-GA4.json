@@ -76,7 +76,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -184,7 +184,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -277,7 +277,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -370,7 +370,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -510,7 +510,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -633,7 +633,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -711,7 +711,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -789,7 +789,7 @@
                                     {
                                         "type": "TEMPLATE",
                                         "key": "value",
-                                        "value": "{{dl.ecommerce.currency}}"
+                                        "value": "{{dl.ecommerce.currencyCode}}"
                                     }
                                 ]
                             },
@@ -1188,7 +1188,7 @@
                 "accountId": "6000494425",
                 "containerId": "30540017",
                 "variableId": "5",
-                "name": "dl.ecommerce.currency",
+                "name": "dl.ecommerce.currencyCode",
                 "type": "v",
                 "parameter": [
                     {
@@ -1204,7 +1204,7 @@
                     {
                         "type": "TEMPLATE",
                         "key": "name",
-                        "value": "ecommerce.currency"
+                        "value": "ecommerce.currencyCode"
                     }
                 ],
                 "fingerprint": "1627093129545",

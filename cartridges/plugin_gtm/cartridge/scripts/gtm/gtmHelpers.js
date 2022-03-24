@@ -107,10 +107,10 @@ function getGA4ProductObject(product) {
 
     if (product.priceModel.maxPrice.valueOrNull != null) {
         obj.price = product.priceModel.maxPrice.value.toFixed(2);
-        obj.currency = product.priceModel.maxPrice.currencyCode;
+        obj.currencyCode = product.priceModel.maxPrice.currencyCode;
     } else if (product.priceModel.price.valueOrNull != null) {
         obj.price = product.priceModel.price.value.toFixed(2);
-        obj.currency = product.priceModel.price.currencyCode;
+        obj.currencyCode = product.priceModel.price.currencyCode;
     }
 
     return obj;
@@ -161,7 +161,7 @@ function getGA4PdpData(res) {
         return {
             'event': 'view_item',
             'ecommerce': {
-                'currency': currency,
+                'currencyCode': currency,
                 'value': price,
                 'items': [module.exports.getGA4ProductObject(product)]
             }
@@ -296,7 +296,7 @@ function getCheckoutData(step) {
     var currentBasket = dw.order.BasketMgr.getCurrentBasket();
     if (currentBasket != null) {
         obj.ecommerce.checkout.products = module.exports.getProductArrayFromList(currentBasket.getProductLineItems().iterator(), module.exports.getOrderProductObject, false);
-        obj.currency = currentBasket.currencyCode;
+        obj.currencyCode = currentBasket.currencyCode;
     }
     return obj;
 }
@@ -312,7 +312,7 @@ function getGA4CheckoutData(step) {
         var obj = {
             'event': step,
             'ecommerce': {
-                'currency': currentBasket.currencyCode,
+                'currencyCode': currentBasket.currencyCode,
                 'value': currentBasket.getAdjustedMerchandizeTotalNetPrice().value.toFixed(2),
                 'items': module.exports.getProductArrayFromList(currentBasket.getProductLineItems().iterator(), module.exports.getGA4OrderProductObject, true)
             }
@@ -423,7 +423,7 @@ function getConfirmationData(res, step) {
             obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
             obj.orderEmail = order.getCustomerEmail();
             obj.orderUser_id = order.getCustomerNo();
-            obj.currency = order.currencyCode;
+            obj.currencyCode = order.currencyCode;
         } else {
             obj.ecommerce.purchase.actionField = {
                 id: res.order.orderNumber,
@@ -456,7 +456,7 @@ function getGA4ConfirmationData(res) {
         var obj = {
             'event': 'purchase',
             'ecommerce': {
-                'currency': order.currencyCode,
+                'currencyCode': order.currencyCode,
                 'transaction_id': order.orderNo,
                 'value': order.getAdjustedMerchandizeTotalPrice(true).getValue().toFixed(2),
                 'shipping': order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
