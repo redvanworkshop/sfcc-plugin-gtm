@@ -2,7 +2,10 @@
     <div class="col-sm-12">
         <input type="hidden" class="add-to-cart-url" value="${pdict.addToCartUrl}">
         <button class="add-to-cart btn btn-primary"
-                data-toggle="modal" data-target="#chooseBonusProductModal" data-gtmdata="${JSON.stringify(product.gtmData)}"
+                data-toggle="modal"
+                data-target="#chooseBonusProductModal"
+                data-gtmdata="${JSON.stringify(product.gtmData)}"
+                data-gtmga4data="${JSON.stringify(product.gtmGA4Data)}"
                 data-pid="${product.id}"
                 ${!product.readyToOrder || !product.available ? "disabled" : ""}>
             <i class="fa fa-shopping-bag"></i>

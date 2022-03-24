@@ -9,37 +9,61 @@ var events = {
 	productshow: function () {},
     productshowincategory: function () {},
 	searchshow: function () {
-		$('body').on('click', '.product .image-container a:not(.quickview), .product .pdp-link a', function () {
-			var gtmdata = $.parseJSON($(this).closest('.product').attr('data-gtmdata'));
-			productClick(gtmdata);
-		});
-	},
-	cartshow: function () {},
-	checkoutbegin: function () {},
-	orderconfirm: function() {},
-	// events that should happen on every page
-	all: function () {
-		// Add to Cart
-	    $('body').on('click', '.add-to-cart, .add-to-cart-global', function () {
-			var gmtData = $.parseJSON($(this).attr('data-gtmdata'));
-			var qty = $(this).closest('.product-wrapper').find('.quantity-select').val();
-			addToCart(gmtData, qty);
-		});
+        if (window.gtmEnabled) {
+            $('body').on('click', '.product .image-container a:not(.quickview), .product .pdp-link a', function () {
+                var gtmdata = JSON.parse($(this).closest('.product').attr('data-gtmdata'));
+                productClick(gtmdata);
+            });
+        }
+    },
+    cartshow: function () {},
+    checkoutbegin: function () {},
+    orderconfirm: function () {},
+    // events that should happen on every page
+    all: function () {
+        // Add to Cart
+        $('body').on('click', '.add-to-cart, .add-to-cart-global', function () {
+            if (!$(this).hasClass('isDisabled') && !$(this).hasClass('disabled')) {
+                var gtmData = JSON.parse($(this).attr('data-gtmdata'));
+                var gtmGA4Data = JSON.parse($(this).attr('data-gtmga4data'));
+                var qty = $(this).closest('.product-wrapper').find('.quantity-select').val();
+                qty = qty ? qty : 1;
 
-		//Remove from Cart
-		$('body').on('click', '.remove-product', function () {
-			var gmtData = $.parseJSON($(this).attr('data-gtmdata'));
-			var qty = $(this).closest('.card').find('select.quantity').val();
-			$('body').on('click', '#removeProductModal .cart-delete-confirmation-btn', function () {
-				removeFromCart(gmtData, qty);
-			});
-		});
-		
-		// update GTM data attribute 
-		$('body').on('product:updateAddToCart', function (e, response) {
-			$('button.add-to-cart, button.add-to-cart-global', response.$productContainer).attr('data-gtmdata', JSON.stringify(response.product.gtmData));
-		});
-	}
+                if (window.gtmEnabled) {
+                    addToCart(gtmData, qty);
+                }
+
+                if (window.gtmGA4Enabled) {
+                    addToCartGA4(gtmGA4Data, qty);
+                }
+            }
+        });
+
+        // Remove from Cart
+        $('body').on('click', '.remove-product', function () {
+            var gtmData = JSON.parse($(this).attr('data-gtmdata'));
+            var gtmGA4Data = JSON.parse($(this).attr('data-gtmga4data'));
+            var qty = $(this).closest('.card').find('select.quantity').val();
+            qty = qty ? qty : 1;
+
+            $('body').on('click', '#removeProductModal .cart-delete-confirmation-btn', function () {
+                if (window.gtmEnabled) {
+                    removeFromCart(gtmData, qty);
+                }
+
+                if (window.gtmGA4Enabled) {
+                    removeFromCartGA4(gtmGA4Data, qty);
+                }
+            });
+        });
+
+        // Update GTM data attribute
+        $('body').on('product:updateAddToCart', function (e, response) {
+            $('button.add-to-cart, button.add-to-cart-global', response.$productContainer)
+                .attr('data-gtmdata', JSON.stringify(response.product.gtmData))
+                .attr('data-gtmga4data', JSON.stringify(response.product.gtmGA4Data));
+        });
+    }
 };
 
 /**
@@ -75,7 +99,28 @@ function addToCart (productObject, quantity) {
 			}
 		};
 	obj.ecommerce.add.products.push($.extend(productObject,quantObj));
-	dataLayer.push(obj);
+
+    dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another, https://developers.google.com/tag-manager/ecommerce-ga4#clearing_the_ecommerce_object
+    dataLayer.push(obj);
+}
+
+/**
+ * @param productId
+ * @description Click event for add product to cart
+ */
+function addToCartGA4(productObject, quantity) {
+    var quantObj = { quantity: quantity };
+    var obj = {
+        'event': 'add_to_cart',
+        'ecommerce': {
+            'currency': productObject.currency,
+            'items': [$.extend(productObject, quantObj)],
+            'value': (Number(productObject.price) * Number(quantity)).toFixed(2)
+        }
+    };
+
+    dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another
+    dataLayer.push(obj);
 }
 
 /**
@@ -93,7 +138,28 @@ function removeFromCart (productObject, quantity) {
 			}
 		};
 	obj.ecommerce.remove.products.push($.extend(productObject,quantObj));
-	dataLayer.push(obj);
+
+    dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another
+    dataLayer.push(obj);
+}
+
+/**
+ * @function removeFromCartGA4
+ * @description Click event for remove product from cart
+ */
+function removeFromCartGA4(productObject, quantity) {
+    var quantObj = { quantity: quantity };
+    var obj = {
+        'event': 'remove_from_cart',
+        'ecommerce': {
+            'currency': productObject.currency,
+            'items': [$.extend(productObject, quantObj)],
+            'value': (Number(productObject.price) * Number(quantity)).toFixed(2),
+        }
+    };
+
+    dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another
+    dataLayer.push(obj);
 }
 
 /**
@@ -118,7 +184,7 @@ function pushEvent (event, eventCategory, eventAction, eventLabel) {
  * @description Initialize the tag manager functionality
  * @param {String} nameSpace The current name space
  */
-$(document).ready(function () {
+$(function () {
 	if (pageAction && events[pageAction]) {
 		events[pageAction]();
 	}
@@ -134,7 +200,10 @@ function gtmEventLoader() {
 			if (settings.dataTypes.indexOf('json') > -1) {
 				if (data && '__gtmEvents' in data && Array.isArray(data.__gtmEvents)) {
 					data.__gtmEvents.forEach(function gtmEvent(gtmEvent) {
-						if (gtmEvent) { dataLayer.push(gtmEvent) }
+						if (gtmEvent) {
+                            dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another
+                            dataLayer.push(gtmEvent);
+						}
 					});
 				}
 			}

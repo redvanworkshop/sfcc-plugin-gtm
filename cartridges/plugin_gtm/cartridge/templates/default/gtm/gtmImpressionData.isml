@@ -4,3 +4,17 @@
         dataLayer.push(<isprint value="${pdict.searchImpressionData}" encoding="off"/>);
     </script>
 </isif>
+
+<iscomment> If both events active, clear first ecommerce object to prevent events affecting one another </iscomment>
+<isif condition="${pdict.searchImpressionData != null && pdict.ga4SearchImpressionData != null}">
+    <script>
+        dataLayer.push({ ecommerce: null });
+    </script>
+</isif>
+
+<isif condition="${pdict.ga4SearchImpressionData != null}">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push(<isprint value="${pdict.ga4SearchImpressionData}" encoding="off"/>);
+    </script>
+</isif>

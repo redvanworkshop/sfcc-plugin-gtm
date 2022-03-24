@@ -1,0 +1,1451 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2021-07-24 02:19:50",
+    "containerVersion": {
+        "path": "accounts/6000494425/containers/30540017/versions/0",
+        "accountId": "6000494425",
+        "containerId": "30540017",
+        "containerVersionId": "0",
+        "container": {
+            "path": "accounts/6000494425/containers/30540017",
+            "accountId": "6000494425",
+            "containerId": "30540017",
+            "name": "GA4",
+            "publicId": "GTM-MGJW8G9",
+            "usageContext": [
+                "WEB"
+            ],
+            "fingerprint": "1580755269775",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000494425/containers/30540017/workspaces?apiLink=container"
+        },
+        "tag": [
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "24",
+                "name": "GA4 - add_payment_info",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "add_payment_info"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "coupon"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.coupon}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "payment_type"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.payment_type}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093152758",
+                "firingTriggerId": [
+                    "15"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "25",
+                "name": "GA4 - add_shipping_info",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "add_shipping_info"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "coupon"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.coupon}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "shipping_tier"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.shipping_tier}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093152952",
+                "firingTriggerId": [
+                    "16"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "26",
+                "name": "GA4 - add_to_cart",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "add_to_cart"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093153149",
+                "firingTriggerId": [
+                    "17"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "27",
+                "name": "GA4 - begin_checkout",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "begin_checkout"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "coupon"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.coupon}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093153359",
+                "firingTriggerId": [
+                    "18"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "28",
+                "name": "GA4 - All Pages",
+                "type": "gaawc",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "sendPageView",
+                        "value": "true"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "enableSendToServerContainer",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "measurementId",
+                        "value": "PASTE-ID-HERE"
+                    }
+                ],
+                "fingerprint": "1627093153549",
+                "firingTriggerId": [
+                    "2147479553"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "29",
+                "name": "GA4 - purchase",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "purchase"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "affiliation"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.affiliation}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "coupon"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.coupon}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "transaction_id"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.transaction_id}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "shipping"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.shipping}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "tax"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.tax}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093153747",
+                "firingTriggerId": [
+                    "19"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "30",
+                "name": "GA4 - remove_from_cart",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "remove_from_cart"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093153934",
+                "firingTriggerId": [
+                    "20"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "31",
+                "name": "GA4 - view_cart",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "view_cart"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093154129",
+                "firingTriggerId": [
+                    "23"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "32",
+                "name": "GA4 - view_item",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "view_item"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "currency"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.currencyCode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.value}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093154355",
+                "firingTriggerId": [
+                    "22"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "tagId": "33",
+                "name": "GA4 - view_item_list",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "view_item_list"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventParameters",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "items"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.items}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "item_list_id"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.item_list_id}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "name",
+                                        "value": "item_list_name"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{dl.ecommerce.item_list_name}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TAG_REFERENCE",
+                        "key": "measurementId",
+                        "value": "GA4 - All Pages"
+                    }
+                ],
+                "fingerprint": "1627093154540",
+                "firingTriggerId": [
+                    "21"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                }
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "15",
+                "name": "GA4 - add_payment_info",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "add_payment_info"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093131545"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "16",
+                "name": "GA4 - add_shipping_info",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "add_shipping_info"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093131729"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "17",
+                "name": "GA4 - add_to_cart",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "add_to_cart"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093131939"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "18",
+                "name": "GA4 - begin_checkout",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "begin_checkout"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093132117"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "19",
+                "name": "GA4 - purchase",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "purchase"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093132297"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "20",
+                "name": "GA4 - remove_from_cart",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "remove_from_cart"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093134157"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "21",
+                "name": "GA4 - view_item_list",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "view_item_list"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093150276"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "22",
+                "name": "GA4 - view_item",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "view_item"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093152229"
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "triggerId": "23",
+                "name": "GA4 - view_cart",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "view_cart"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1627093152510"
+            }
+        ],
+        "variable": [
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "3",
+                "name": "dl.ecommerce.affiliation",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.affiliation"
+                    }
+                ],
+                "fingerprint": "1627093129072",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "4",
+                "name": "dl.ecommerce.coupon",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.coupon"
+                    }
+                ],
+                "fingerprint": "1627093129341",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "5",
+                "name": "dl.ecommerce.currencyCode",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.currencyCode"
+                    }
+                ],
+                "fingerprint": "1627093129545",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "6",
+                "name": "dl.ecommerce.item_list_id",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.item_list_id"
+                    }
+                ],
+                "fingerprint": "1627093129731",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "7",
+                "name": "dl.ecommerce.item_list_name",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.item_list_name"
+                    }
+                ],
+                "fingerprint": "1627093129915",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "8",
+                "name": "dl.ecommerce.items",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.items"
+                    }
+                ],
+                "fingerprint": "1627093130129",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "9",
+                "name": "dl.ecommerce.payment_type",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.payment_type"
+                    }
+                ],
+                "fingerprint": "1627093130342",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "10",
+                "name": "dl.ecommerce.shipping",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.shipping"
+                    }
+                ],
+                "fingerprint": "1627093130527",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "11",
+                "name": "dl.ecommerce.shipping_tier",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.shipping_tier"
+                    }
+                ],
+                "fingerprint": "1627093130730",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "12",
+                "name": "dl.ecommerce.tax",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "dl.ecommerce.tax"
+                    }
+                ],
+                "fingerprint": "1627093130910",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "13",
+                "name": "dl.ecommerce.transaction_id",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.transaction_id"
+                    }
+                ],
+                "fingerprint": "1627093131094",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6000494425",
+                "containerId": "30540017",
+                "variableId": "14",
+                "name": "dl.ecommerce.value",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "2"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "ecommerce.value"
+                    }
+                ],
+                "fingerprint": "1627093131300",
+                "formatValue": {}
+            }
+        ],
+        "fingerprint": "1627093190547",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6000494425/containers/30540017/versions/0?apiLink=version"
+    }
+}

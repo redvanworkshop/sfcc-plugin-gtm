@@ -4,6 +4,7 @@
         data-action="${pdict.actionUrls.removeProductLineItemUrl}"
         data-uuid="${lineItem.UUID}"
         data-gtmdata="${JSON.stringify(lineItem.gtmData)}"
+        data-gtmga4data="${JSON.stringify(lineItem.gtmGA4Data)}"
         aria-label="${Resource.msgf('text.remove.line.item','cart', null, lineItem.productName)}">
     <span aria-hidden="true">&times;</span>
 </button>

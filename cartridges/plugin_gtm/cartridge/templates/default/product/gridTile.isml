@@ -1,5 +1,8 @@
 <isset name="showQuickView" value="${true}" scope="page" />
 <isset name="product" value="${pdict.product}" scope="page" />
-<div class="product" data-pid="${product.id}" data-gtmdata="${JSON.stringify(product.gtmData)}">
+<div class="product"
+    data-pid="${product.id}"
+    data-gtmdata="${JSON.stringify(product.gtmData)}"
+    data-gtmga4data="${JSON.stringify(product.gtmGA4Data)}">
     <isinclude template="product/productTile" />
 </div>
