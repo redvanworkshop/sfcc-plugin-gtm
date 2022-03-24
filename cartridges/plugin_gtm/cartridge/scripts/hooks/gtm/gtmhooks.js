@@ -1,6 +1,7 @@
 'use strict';
 
 var velocity = require('dw/template/Velocity');
+var UUIDUtils = require('dw/util/UUIDUtils');
 var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
 
 /**
@@ -88,17 +89,34 @@ function registerRoute(route) {
     });
 }
 
+/**
+ * Inject GTM JSON attributes against product DOM element
+ * @param {Object} pdict - The current pdict
+ * @returns {String} attributes string for product DOM element
+ */
+function productTile(pdict) {
+    if (pdict && pdict.product && !empty(pdict.product.gtmData)) {
+        var obj = {
+            'uuid': [pdict.product.id,UUIDUtils.createUUID()].join('-'),
+            'data': JSON.stringify(pdict.product.gtmData)
+        };
+        velocity.render('<script id=\"$uuid\"> var s = document.getElementById(\'$uuid\'), p = s.parentNode; p.dataset.gtmdata = JSON.stringify($data); p.removeChild(s); </script>',obj);
+    }
+}
+
 // Ensure gtm is enabled before registering hooks
 if (gtmHelpers.isEnabled || gtmHelpers.isGA4Enabled) {
     module.exports = {
         htmlHead: htmlHead,
         beforeHeader: beforeHeader,
-        registerRoute: registerRoute
+        registerRoute: registerRoute,
+        productTile: productTile
     }
 } else {
     module.exports = {
         htmlHead: function(){},
         beforeHeader: function(){},
-        registerRoute: function(){}
+        registerRoute: function(){},
+        productTile: function () {}
     }
 }
