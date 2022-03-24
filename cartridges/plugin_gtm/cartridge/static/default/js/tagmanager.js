@@ -11,22 +11,24 @@ var events = {
 	searchshow: function () {
         if (window.gtmEnabled) {
             $('body').on('click', '.product .image-container a:not(.quickview), .product .pdp-link a', function () {
-                var gtmdata = JSON.parse($(this).closest('.product').attr('data-gtmdata'));
+                var $ele = $(this).closest('.product');
+                var gtmdata = $ele.data('gtmdata') || $.parseJSON($ele.attr('data-gtmdata'));
                 productClick(gtmdata);
             });
         }
-    },
-    cartshow: function () {},
-    checkoutbegin: function () {},
-    orderconfirm: function () {},
-    // events that should happen on every page
-    all: function () {
-        // Add to Cart
+	},
+	cartshow: function () {},
+	checkoutbegin: function () {},
+	orderconfirm: function () {},
+	// events that should happen on every page
+	all: function () {
+		// Add to Cart
         $('body').on('click', '.add-to-cart, .add-to-cart-global', function () {
             if (!$(this).hasClass('isDisabled') && !$(this).hasClass('disabled')) {
-                var gtmData = JSON.parse($(this).attr('data-gtmdata'));
-                var gtmGA4Data = JSON.parse($(this).attr('data-gtmga4data'));
-                var qty = $(this).closest('.product-wrapper').find('.quantity-select').val();
+                var $ele = $(this);
+                var gmtData = $ele.data('gtmdata') || $.parseJSON($ele.attr('data-gtmdata'));
+                var gtmGA4Data = $ele.data('gtmga4data') || $.parseJSON($ele.attr('data-gtmga4data'));
+                var qty = $ele.closest('.product-wrapper').find('.quantity-select').val();
                 qty = qty ? qty : 1;
 
                 if (window.gtmEnabled) {
@@ -41,9 +43,10 @@ var events = {
 
         // Remove from Cart
         $('body').on('click', '.remove-product', function () {
-            var gtmData = JSON.parse($(this).attr('data-gtmdata'));
-            var gtmGA4Data = JSON.parse($(this).attr('data-gtmga4data'));
-            var qty = $(this).closest('.card').find('select.quantity').val();
+            var $ele = $(this);
+			var gmtData = $ele.data('gtmdata') || $.parseJSON($ele.attr('data-gtmdata'));
+            var gtmGA4Data = $ele.data('gtmga4data') || $.parseJSON($ele.attr('data-gtmga4data'));
+			var qty = $ele.closest('.card').find('select.quantity').val();
             qty = qty ? qty : 1;
 
             $('body').on('click', '#removeProductModal .cart-delete-confirmation-btn', function () {
@@ -63,7 +66,7 @@ var events = {
                 .attr('data-gtmdata', JSON.stringify(response.product.gtmData))
                 .attr('data-gtmga4data', JSON.stringify(response.product.gtmGA4Data));
         });
-    }
+	}
 };
 
 /**
@@ -99,9 +102,9 @@ function addToCart (productObject, quantity) {
 			}
 		};
 	obj.ecommerce.add.products.push($.extend(productObject,quantObj));
-
-    dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another, https://developers.google.com/tag-manager/ecommerce-ga4#clearing_the_ecommerce_object
-    dataLayer.push(obj);
+    
+    dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another
+	dataLayer.push(obj);
 }
 
 /**
@@ -128,19 +131,19 @@ function addToCartGA4(productObject, quantity) {
  * @description Click event for remove product from cart
  */
 function removeFromCart (productObject, quantity) {
-	var quantObj = {'quantity': quantity},
-		obj = {
-			'event': 'removeFromCart',
-			'ecommerce': {
-				'remove': {
-					'products': []
-				}
-			}
-		};
+	var quantObj = {'quantity': quantity};
+	var obj = {
+        'event': 'removeFromCart',
+        'ecommerce': {
+            'remove': {
+                'products': []
+            }
+        }
+    };
 	obj.ecommerce.remove.products.push($.extend(productObject,quantObj));
-
+    
     dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object to prevent events affecting one another
-    dataLayer.push(obj);
+	dataLayer.push(obj);
 }
 
 /**
@@ -184,7 +187,7 @@ function pushEvent (event, eventCategory, eventAction, eventLabel) {
  * @description Initialize the tag manager functionality
  * @param {String} nameSpace The current name space
  */
-$(function () {
+$(document).ready(function () {
 	if (pageAction && events[pageAction]) {
 		events[pageAction]();
 	}

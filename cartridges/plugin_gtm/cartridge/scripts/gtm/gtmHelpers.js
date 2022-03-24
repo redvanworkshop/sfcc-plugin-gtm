@@ -517,19 +517,19 @@ function getDataLayer(res, ga4) {
             case 'Search-Show':
                 return getSearchImpressionData(res);
             case 'Cart-Show':
-                return getCheckoutData('1');
+                return getCheckoutData(1);
             case 'Checkout-Login':
-                return getCheckoutData('2');
+                return getCheckoutData(2);
             case 'Checkout-Begin':
-                return getCheckoutData('3');
+                return getCheckoutData(3);
             case 'CheckoutShippingServices-SubmitShipping':
-                return getCheckoutData('4');
+                return getCheckoutData(4);
             case 'CheckoutServices-SubmitPayment':
-                return getCheckoutData('5');
+                return getCheckoutData(5);
             case 'CheckoutServices-PlaceOrder':
-                return getCheckoutData('6');
+                return getCheckoutData(6);
             case 'Order-Confirm':
-                return getConfirmationData(res, '7');
+                return getConfirmationData(res, 7);
             default:
                 return false;
         }
