@@ -12,9 +12,7 @@ server.append('UpdateGrid', function (req, res, next) {
         var searchImpressionData = gtmHelpers.getSearchImpressionData(viewData);
         searchImpressionData.event = 'searchImpressions';
         viewData.searchImpressionData = JSON.stringify(searchImpressionData);
-    }
 
-    if (gtmHelpers.isGA4Enabled) {
         var ga4SearchImpressionData = gtmHelpers.getGA4SearchImpressionData(viewData);
         ga4SearchImpressionData.event = 'view_item_list';
         viewData.ga4SearchImpressionData = JSON.stringify(ga4SearchImpressionData);
