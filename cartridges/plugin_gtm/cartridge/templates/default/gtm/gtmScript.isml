@@ -2,7 +2,6 @@
     var pageAction = '${pdict.action.replace("-", "").toLowerCase()}';
     window.dataLayer = window.dataLayer || [];
     window.gtmEnabled = <isprint value="${pdict.gtmEnabled}" encoding="off"/>;
-    window.gtmGA4Enabled = <isprint value="${pdict.gtmGA4Enabled}" encoding="off"/>;
     var orderId = -1;
     var dataLayerEvent = <isprint value="${pdict.datalayer}" encoding="off"/>;
     var ga4DataLayerEvent = <isprint value="${pdict.ga4datalayer}" encoding="off"/>;

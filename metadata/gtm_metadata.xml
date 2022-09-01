@@ -2,15 +2,15 @@
 <metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
-           <attribute-definition attribute-id="GTMEnable">
+            <attribute-definition attribute-id="GTMEnable">
                 <display-name xml:lang="x-default">Enable GTM</display-name>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="GTMEnableGA4">
-                <display-name xml:lang="x-default">Enable GTM GA4</display-name>
+            <attribute-definition attribute-id="GTMGA4Enable">
+                <display-name xml:lang="x-default">Enable GA4</display-name>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -29,7 +29,7 @@
             <attribute-group group-id="GTM">
                 <display-name xml:lang="x-default">GTM</display-name>
                 <attribute attribute-id="GTMEnable"/>
-                <attribute attribute-id="GTMEnableGA4"/>
+                <attribute attribute-id="GTMGA4Enable"/>
                 <attribute attribute-id="GTMID"/>
             </attribute-group>
         </group-definitions>

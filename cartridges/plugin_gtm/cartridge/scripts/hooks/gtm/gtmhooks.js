@@ -9,29 +9,18 @@ var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
  * Renders GTM code.
  */
 function htmlHead(pdict) {
-    if (gtmHelpers.isEnabled || gtmHelpers.isGA4Enabled) {
-        var datalayer = false;
-        var ga4datalayer = false;
-        var gtmEnabled = gtmHelpers.isEnabled;
-        var gtmGA4Enabled = gtmHelpers.isGA4Enabled;
-
-        if (gtmHelpers.isEnabled) {
-            datalayer = gtmHelpers.getDataLayer(pdict, false);
-        }
-
-        if (gtmHelpers.isGA4Enabled) {
-            ga4datalayer = gtmHelpers.getDataLayer(pdict, true);
-        }
+    if (gtmHelpers.isEnabled) {
+        var datalayer = gtmHelpers.getDataLayer(pdict, false);
+        var ga4datalayer = gtmHelpers.isGA4Enabled ? gtmHelpers.getDataLayer(pdict, true) : false;
 
         velocity.render(
-            "$velocity.remoteInclude('GTM-HtmlHead', 'action', $action, 'datalayer', $datalayer, 'ga4datalayer', $ga4datalayer, 'gtmEnabled', $gtmEnabled, 'gtmGA4Enabled', $gtmGA4Enabled)",
+            "$velocity.remoteInclude('GTM-HtmlHead', 'action', $action, 'datalayer', $datalayer, 'ga4datalayer', $ga4datalayer, 'gtmEnabled', $gtmEnabled)",
             {
                 velocity: velocity,
                 action: pdict.action,
                 datalayer: datalayer ? JSON.stringify(datalayer) : false,
                 ga4datalayer: ga4datalayer ? JSON.stringify(ga4datalayer) : false,
-                gtmEnabled: gtmEnabled,
-                gtmGA4Enabled: gtmGA4Enabled
+                gtmEnabled: gtmHelpers.isEnabled
             }
         );
     }
@@ -71,13 +60,11 @@ function registerRoute(route) {
                 if (dataLayerEvent) {
                     res.viewData.__gtmEvents.push(dataLayerEvent);
                 }
-            }
 
-            if (gtmHelpers.isGA4Enabled) {
-                var dataLayerEvent = gtmHelpers.getDataLayer(res.viewData, true);
+                var dataLayerGA4Event = gtmHelpers.getDataLayer(res.viewData, true);
 
-                if (dataLayerEvent) {
-                    res.viewData.__gtmEvents.push(dataLayerEvent);
+                if (dataLayerGA4Event) {
+                    res.viewData.__gtmEvents.push(dataLayerGA4Event);
                 }
             }
         }
@@ -95,17 +82,18 @@ function registerRoute(route) {
  * @returns {String} attributes string for product DOM element
  */
 function productTile(pdict) {
-    if (pdict && pdict.product && !empty(pdict.product.gtmData)) {
+    if (pdict && pdict.product && !empty(pdict.product.gtmData) && !empty(pdict.product.gtmGA4Data)) {
         var obj = {
             'uuid': [pdict.product.id,UUIDUtils.createUUID()].join('-'),
-            'data': JSON.stringify(pdict.product.gtmData)
+            'gtmData': JSON.stringify(pdict.product.gtmData),
+            'gtmGA4Data': JSON.stringify(pdict.product.gtmGA4Data)
         };
-        velocity.render('<script id=\"$uuid\"> var s = document.getElementById(\'$uuid\'), p = s.parentNode; p.dataset.gtmdata = JSON.stringify($data); p.removeChild(s); </script>',obj);
+        velocity.render('<script id=\"$uuid\"> var s = document.getElementById(\'$uuid\'), p = s.parentNode; p.dataset.gtmdata = JSON.stringify($gtmData); p.dataset.gtmGA4Data = JSON.stringify($gtmGA4Data); p.removeChild(s); </script>',obj);
     }
 }
 
 // Ensure gtm is enabled before registering hooks
-if (gtmHelpers.isEnabled || gtmHelpers.isGA4Enabled) {
+if (gtmHelpers.isEnabled) {
     module.exports = {
         htmlHead: htmlHead,
         beforeHeader: beforeHeader,
@@ -114,9 +102,9 @@ if (gtmHelpers.isEnabled || gtmHelpers.isGA4Enabled) {
     }
 } else {
     module.exports = {
-        htmlHead: function(){},
-        beforeHeader: function(){},
-        registerRoute: function(){},
+        htmlHead: function () {},
+        beforeHeader: function () {},
+        registerRoute: function () {},
         productTile: function () {}
     }
 }

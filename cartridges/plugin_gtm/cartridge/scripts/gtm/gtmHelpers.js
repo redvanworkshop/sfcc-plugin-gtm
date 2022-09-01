@@ -2,11 +2,11 @@
 
 var ProductMgr = require('dw/catalog/ProductMgr');
 var Resource = require('dw/web/Resource');
-var Logger = require('dw/system/Logger');
+
 var Site = require('dw/system/Site');
-var gtmEnabled = Site.getCurrent().getCustomPreferenceValue('GTMEnable') || false;
-var gtmGA4Enabled = Site.getCurrent().getCustomPreferenceValue('GTMEnableGA4') || false;
-var gtmContainerId = Site.getCurrent().getCustomPreferenceValue('GTMID') || '';
+var gtmEnabled = Site.current.getCustomPreferenceValue('GTMEnable') || false;
+var gtmga4Enabled = Site.current.getCustomPreferenceValue('GTMGA4Enable') || false;
+var gtmContainerId = Site.current.getCustomPreferenceValue('GTMID') || '';
 
 var SITE_NAME = 'Sites-'+Site.current.ID+'-Site';
 /**
@@ -20,7 +20,7 @@ function getCustomerData(res) {
         session = request.session,
         customerObject = {};
 
-    customerObject.environment = (system.getInstanceType() === system.PRODUCTION_SYSTEM ? 'production' : 'development');
+    customerObject.environment = (system.instanceType === system.PRODUCTION_SYSTEM ? 'production' : 'development');
     customerObject.demandwareID = customer.ID;
     customerObject.loggedInState = customer.authenticated;
     if (res.locale && res.locale.id) {
@@ -28,14 +28,14 @@ function getCustomerData(res) {
     } else {
         customerObject.locale = Site.current.defaultLocale;
     }
-    customerObject.currencyCode = session.getCurrency().currencyCode;
+    customerObject.currencyCode = session.currency.currencyCode;
     customerObject.pageLanguage = request.httpLocale;
     customerObject.registered = customer.registered;
 
     if (customer.registered && profile != null) {
         customerObject.email = profile.email.toLowerCase();
         customerObject.emailHash = dw.crypto.Encoding.toHex(new dw.crypto.MessageDigest('SHA-256').digestBytes(new dw.util.Bytes(profile.email.toLowerCase())));
-        customerObject.user_id = profile.getCustomerNo();
+        customerObject.user_id = profile.customerNo;
     } else {
         var email = (session.custom.email == null) ? '' : session.custom.email;
         var emailHash = (session.custom.emailHash == null) ? '' : session.custom.emailHash;
@@ -63,12 +63,14 @@ function getHomeData() {
  */
 function getProductObject(product) {
     var obj = {};
-    obj.id = product.getID();
+    obj.id = product.ID;
     var master = product.variationModel.master;
     if (product.variant) {
         obj.id = master.ID;
     }
-    obj.name = product.getName();
+
+    obj.name = product.name;
+
     if (product.primaryCategory != null) {
         obj.category = product.primaryCategory.displayName;
         obj.categoryID = product.primaryCategory.ID.replace(/_/gi, '/');
@@ -76,8 +78,12 @@ function getProductObject(product) {
         obj.category = master.primaryCategory.displayName;
         obj.categoryID = master.primaryCategory.ID.replace(/_/gi, '/');
     }
+
     if (product.priceModel.maxPrice.valueOrNull != null) {
         obj.price = product.priceModel.maxPrice.value.toFixed(2);
+    } else if (product.priceModel.price.valueOrNull != null) {
+        obj.price = product.priceModel.price.value.toFixed(2);
+        obj.currencyCode = product.priceModel.price.currencyCode;
     }
     return obj;
 };
@@ -88,17 +94,15 @@ function getProductObject(product) {
  */
 function getGA4ProductObject(product) {
     var obj = {};
-
-    if (product.isVariant() || product.isVariationGroup()) {
-        obj.item_id = product.variationModel.master.getID();
-        obj.item_name = product.variationModel.master.getName();
-        obj.item_variant = product.getID();
-    } else {
-        obj.item_id = product.getID();
-        obj.item_name = product.getName();
+    obj.item_id = product.ID;
+    var master = product.variationModel.master;
+    if (product.variant) {
+        obj.item_id = master.ID;
+        obj.item_variant = product.ID;
     }
 
-    var master = product.variationModel.master;
+    obj.item_name = product.name;
+
     if (product.primaryCategory != null) {
         obj.item_category = product.primaryCategory.displayName;
     } else if (master && master.primaryCategory != null) {
@@ -147,23 +151,14 @@ function getPdpData(res) {
 function getGA4PdpData(res) {
     if ('product' in res) {
         var product = ProductMgr.getProduct(res.product.id);
-        var price = 0;
-        var currency = '';
-
-        if (product.priceModel.maxPrice.valueOrNull != null) {
-            price = product.priceModel.maxPrice.value.toFixed(2);
-            currency = product.priceModel.maxPrice.currencyCode;
-        } else if (product.priceModel.price.valueOrNull != null) {
-            price = product.priceModel.price.value.toFixed(2);
-            currency = product.priceModel.price.currencyCode;
-        }
+        var productObject = module.exports.getGA4ProductObject(product);
 
         return {
             'event': 'view_item',
             'ecommerce': {
-                'currencyCode': currency,
-                'value': price,
-                'items': [module.exports.getGA4ProductObject(product)]
+                'currencyCode': productObject.currencyCode,
+                'value': productObject.price,
+                'items': [productObject]
             }
         };
     }
@@ -356,7 +351,7 @@ function getGA4CheckoutData(step) {
 
 /**
  * @param {CouponLineItems} coupons - a collection of all the order coupons
- * @return {String} a comma separated string of all the coupons in the order
+ * @return {String} a comman separated string of all the coupons in the order
  */
 function getCoupons(coupons) {
     var text = new Array();
@@ -379,7 +374,7 @@ function getConfirmationActionFieldObject(order, step) {
     var obj = {
         id: order.getOrderNo(),
         step: step,
-        affiliation: Site.getCurrent().getID(),
+        affiliation: Site.current.ID,
         revenue: order.getAdjustedMerchandizeTotalPrice(true).getValue().toFixed(2),
         tax: order.getTotalTax().getValue().toFixed(2),
         shipping: order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
@@ -406,32 +401,30 @@ function getConfirmationData(res, step) {
         }
     };
 
-    if ('order' in res) {
-        var order = null;
-        try {
-            if ('orderToken' in request.httpParameterMap) {
-                order = dw.order.OrderMgr.getOrder(res.order.orderNumber, request.httpParameterMap.orderToken.value);
-            } else {
-                order = dw.order.OrderMgr.getOrder(res.order.orderNumber);
-            }
-        } catch (e) {
-            var Logger = require('dw/system/Logger');
-            Logger.error('GTMHelpers - cannot retrieve order');
-        }
-        if (order) {
-            obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject, false);
-            obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
-            obj.orderEmail = order.getCustomerEmail();
-            obj.orderUser_id = order.getCustomerNo();
-            obj.currencyCode = order.currencyCode;
+    var order = null;
+    try {
+        if ('orderToken' in res.CurrentHttpParameterMap) {
+            order = dw.order.OrderMgr.getOrder(res.order ? res.order.orderNumber : res.CurrentHttpParameterMap.orderID.value, res.CurrentHttpParameterMap.orderToken.value);
         } else {
-            obj.ecommerce.purchase.actionField = {
-                id: res.order.orderNumber,
-                step: step,
-                affiliation: Site.getCurrent().getID()
-            };
+            order = dw.order.OrderMgr.getOrder(res.order ? res.order.orderNumber : res.CurrentHttpParameterMap.orderID.value);
         }
+    } catch (e) {
+        var Logger = require('dw/system/Logger');
+        Logger.error('GTMHelpers - cannot retrieve order: ' + e.message);
     }
+    if (order) {
+        obj.ecommerce.purchase.products = module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getOrderProductObject, false);
+        obj.ecommerce.purchase.actionField = module.exports.getConfirmationActionFieldObject(order, step);
+        obj.orderEmail = order.getCustomerEmail();
+        obj.orderUser_id = order.getCustomerNo();
+        obj.currencyCode = order.currencyCode;
+    } else {
+        obj.ecommerce.purchase.actionField = {
+            step: step,
+            affiliation: Site.current.ID
+        };
+    }
+
     return obj;
 }
 
@@ -441,19 +434,21 @@ function getConfirmationData(res, step) {
  */
 function getGA4ConfirmationData(res) {
     var order = null;
+    var obj = null;
 
     try {
-        if ('token' in request.httpParameterMap) {
-            order = dw.order.OrderMgr.getOrder(res.order.orderNumber, request.httpParameterMap.token.value);
+        if ('orderToken' in res.CurrentHttpParameterMap) {
+            order = dw.order.OrderMgr.getOrder(res.order ? res.order.orderNumber : res.CurrentHttpParameterMap.orderID.value, res.CurrentHttpParameterMap.orderToken.value);
         } else {
-            order = dw.order.OrderMgr.getOrder(res.order.orderNumber);
+            order = dw.order.OrderMgr.getOrder(res.order ? res.order.orderNumber : res.CurrentHttpParameterMap.orderID.value);
         }
     } catch (e) {
-        Logger.error('GTMHelpers - cannot retrieve order');
+        var Logger = require('dw/system/Logger');
+        Logger.error('GTMHelpers - cannot retrieve order: ' + e.message);
     }
 
     if (order) {
-        var obj = {
+        obj = {
             'event': 'purchase',
             'ecommerce': {
                 'currencyCode': order.currencyCode,
@@ -462,7 +457,7 @@ function getGA4ConfirmationData(res) {
                 'shipping': order.getAdjustedShippingTotalPrice().getValue().toFixed(2),
                 'tax': order.getTotalTax().getValue().toFixed(2),
                 'items': module.exports.getProductArrayFromList(order.getProductLineItems().iterator(), module.exports.getGA4OrderProductObject, true),
-                'affiliation': Site.getCurrent().getID()
+                'affiliation': Site.current.ID
             }
         };
 
@@ -470,15 +465,13 @@ function getGA4ConfirmationData(res) {
         if (!empty(coupons)) {
             obj.ecommerce['coupon'] = coupons;
         }
-
-        return obj;
     }
 
-    return {};
+    return obj;
 }
 
 /**
- * @param {Object} res - current route response object
+ * @param {object} res - current route response object
  * @param {Boolean} ga4 - is for GA4
  * @returns {Object} Object containing full datalayer
  */
@@ -488,19 +481,19 @@ function getDataLayer(res, ga4) {
         switch (res.action) {
             case 'Product-Show':
             case 'Product-ShowInCategory':
-                return getGA4PdpData(res);
+                return module.exports.getGA4PdpData(res);
             case 'Search-Show':
-                return getGA4SearchImpressionData(res);
+                return module.exports.getGA4SearchImpressionData(res);
             case 'Cart-Show':
-                return getGA4CheckoutData('view_cart');
+                return module.exports.getGA4CheckoutData('view_cart');
             case 'Checkout-Begin':
-                return getGA4CheckoutData('begin_checkout');
+                return module.exports.getGA4CheckoutData('begin_checkout');
             case 'CheckoutShippingServices-SubmitShipping':
-                return getGA4CheckoutData('add_shipping_info');
+                return module.exports.getGA4CheckoutData('add_shipping_info');
             case 'CheckoutServices-SubmitPayment':
-                return getGA4CheckoutData('add_payment_info');
+                return module.exports.getGA4CheckoutData('add_payment_info');
             case 'Order-Confirm':
-                return getGA4ConfirmationData(res);
+                return module.exports.getGA4ConfirmationData(res);
             default:
                 return false;
         }
@@ -510,26 +503,24 @@ function getDataLayer(res, ga4) {
             case SITE_NAME:
             case 'Home-Show':
             case 'Default-Start':
-                return getHomeData();
+                return module.exports.getHomeData();
             case 'Product-Show':
             case 'Product-ShowInCategory':
-                return getPdpData(res);
+                return module.exports.getPdpData(res);
             case 'Search-Show':
-                return getSearchImpressionData(res);
+                return module.exports.getSearchImpressionData(res);
             case 'Cart-Show':
-                return getCheckoutData(1);
-            case 'Checkout-Login':
-                return getCheckoutData(2);
+                return module.exports.getCheckoutData(1);
             case 'Checkout-Begin':
-                return getCheckoutData(3);
+                return module.exports.getCheckoutData(2);
             case 'CheckoutShippingServices-SubmitShipping':
-                return getCheckoutData(4);
+                return module.exports.getCheckoutData(3);
             case 'CheckoutServices-SubmitPayment':
-                return getCheckoutData(5);
+                return module.exports.getCheckoutData(4);
             case 'CheckoutServices-PlaceOrder':
-                return getCheckoutData(6);
+                return module.exports.getCheckoutData(5);
             case 'Order-Confirm':
-                return getConfirmationData(res, 7);
+                return module.exports.getConfirmationData(res, 6);
             default:
                 return false;
         }
@@ -538,7 +529,7 @@ function getDataLayer(res, ga4) {
 
 module.exports = {
     isEnabled: gtmEnabled,
-    isGA4Enabled: gtmGA4Enabled,
+    isGA4Enabled: gtmga4Enabled,
     gtmContainer: gtmContainerId,
     getDataLayer: getDataLayer,
     getProductObject: getProductObject,

@@ -6,7 +6,7 @@ var gtmHelpers = require('*/cartridge/scripts/gtm/gtmHelpers');
 
 server.get('CustomerData', function (req, res, next) {
     var customerData = gtmHelpers.getCustomerData(req);
-    
+
     res.render('/gtm/gtmCustomerData', {
         customerData: JSON.stringify(customerData)
     });
@@ -35,8 +35,7 @@ server.get('HtmlHead', server.middleware.include, function (req, res, next) {
         action: req.querystring.action,
         datalayer: req.querystring.datalayer,
         ga4datalayer: req.querystring.ga4datalayer,
-        gtmEnabled: req.querystring.gtmEnabled,
-        gtmGA4Enabled: req.querystring.gtmGA4Enabled
+        gtmEnabled: req.querystring.gtmEnabled
     });
 
     next();
